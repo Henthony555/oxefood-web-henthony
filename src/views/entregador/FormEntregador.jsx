@@ -1,10 +1,19 @@
 import React from "react";
 import InputMask from 'react-input-mask';
-import { Button, Container, Divider, Form, Icon } from 'semantic-ui-react';
+import { Button, Container, Divider, Form, Icon, Select } from 'semantic-ui-react';
+
+const countryOptions = [
+    { key: 'bh', value: 'bh', text: 'BH' },
+    { key: 'pe', value: 'pe', text: 'PE' },
+]
 
 class FormCliente extends React.Component {
+    state = {}
+
+    handleChange = (e, { value }) => this.setState({ value })
 
     render() {
+        const { value } = this.state
         return (
             <div>
 
@@ -47,12 +56,12 @@ class FormCliente extends React.Component {
 
                                 </Form.Group>
 
-                                <Form.Group>
+                                <Form.Group widths='equal'>
 
                                     <Form.Input
                                         fluid
                                         label='DT Nascimento'
-                                        width={6}>
+                                    >
 
                                         <InputMask
                                             mask="99/99/9999"
@@ -65,7 +74,7 @@ class FormCliente extends React.Component {
                                         required
                                         fluid
                                         label='Fone Celular'
-                                        width={6}>
+                                    >
                                         <InputMask
                                             mask="(99) 9999.9999" />
                                     </Form.Input>
@@ -73,22 +82,96 @@ class FormCliente extends React.Component {
                                     <Form.Input
                                         fluid
                                         label='Fone Fixo'
-                                        width={6}>
-                                            <InputMask
-											mask="(99) 9999.9999" />
+                                    >
+                                        <InputMask
+                                            mask="(99) 9999.9999" />
                                     </Form.Input>
 
                                     <Form.Input
                                         fluid
                                         label='QTD Entregas Realizadas'
-                                        width={6}>
+                                    >
                                     </Form.Input>
 
                                     <Form.Input
                                         fluid
                                         label='Valor Por Frete'
-                                        width={6}>
+                                    >
                                     </Form.Input>
+
+                                </Form.Group>
+
+                                <Form.Group widths='equal'>
+
+                                    <Form.Input
+                                        fluid
+                                        label='Rua'
+                                    />
+
+                                    <Form.Input
+                                        width={4}
+                                        fluid
+                                        label='Número'>
+                                    </Form.Input>
+
+                                </Form.Group>
+
+                                <Form.Group widths='equal'>
+
+                                    <Form.Input
+                                        fluid
+                                        label='Bairro'
+                                    />
+
+                                    <Form.Input
+                                        fluid
+                                        label='Cidade'
+                                    />
+
+                                    <Form.Input
+                                        width={4}
+                                        fluid
+                                        label='CEP'>
+                                        <InputMask
+                                            mask="12345-123" />
+                                    </Form.Input>
+
+                                </Form.Group>
+
+                                <Form.Group widths='equal'>
+
+                                    <Form.Input
+                                        fluid
+                                        label='UF'>
+                                        <Select placeholder='Selecione' fluid options={countryOptions} />
+                                    </Form.Input>
+
+                                </Form.Group>
+
+                                <Form.Group widths='equal'>
+
+                                    <Form.Input
+                                        fluid
+                                        label='Complemento'>
+                                    </Form.Input>
+
+                                </Form.Group>
+
+                                <Form.Group inline>
+
+                                    <label>Ativo:</label>
+                                    <Form.Radio
+                                        label='Sim'
+                                        value='sim'
+                                        checked={value === 'sim'}
+                                        onChange={this.handleChange}
+                                    />
+                                    <Form.Radio
+                                        label='Não'
+                                        value='nao'
+                                        checked={value === 'nao'}
+                                        onChange={this.handleChange}
+                                    />
 
                                 </Form.Group>
 
@@ -105,7 +188,7 @@ class FormCliente extends React.Component {
                                             onClick={this.listar}
                                         >
                                             <Icon name='reply' />
-                                            Listar
+                                            Voltar
                                         </Button>
                                     </Container>
 
