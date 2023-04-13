@@ -1,16 +1,16 @@
 import { Segment } from 'semantic-ui-react';
 import './App.css';
-import FormProduto from './views/produto/FormProduto';
-import FormCliente from './views/cliente/FormCliente';
-import FormEntregador from './views/entregador/FormEntregador';
-import Home from './views/home/Home';
+import Rotas from './Rotas';
+import MenuSistema from './MenuSistema';
 
 function App() {
   return (
     <div className="App">
-      <FormEntregador />
+      <MenuSistema />
 
-      <div style={{marginTop: '6%'}}>
+      <Rotas />
+
+      <div style={{marginTop: '10%'}}>
         <Segment vertical color='grey' size='tiny' textAlign='center'>
           &copy; 2023 - Projeto WEB III - IFPE Jaboatão dos Guararapes
         </Segment>
