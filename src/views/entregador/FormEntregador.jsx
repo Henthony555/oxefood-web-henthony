@@ -8,9 +8,25 @@ const countryOptions = [
 ]
 
 class FormCliente extends React.Component {
-    state = {}
 
-    handleChange = (e, { value }) => this.setState({ value })
+    state = {
+        nome: null,
+		cpf: null,
+		rg: null,
+		dataNascimento: null,
+		foneCelular: null,
+		foneFixo: null,
+        qtdEntregasRealizadas: null,
+        valorFrete: null,
+        enderecoRua: null,
+        enderecoNumero: null,
+        enderecoBairro: null,
+        enderecoCidade: null,
+        enderecoCep: null,
+        enderecoUf: null,
+        enderecoComplemento: null,
+        ativo: true
+    }
 
     render() {
         const { value } = this.state
@@ -36,6 +52,8 @@ class FormCliente extends React.Component {
                                         fluid
                                         label='Nome'
                                         maxLength="100"
+                                        value={this.state.nome}
+										onChange={e => this.setState({nome: e.target.value})}
                                     />
 
                                     <Form.Input
@@ -44,14 +62,20 @@ class FormCliente extends React.Component {
                                         width={6}
                                         label='CPF'>
                                         <InputMask
-                                            mask="999.999.999-99" />
+                                            mask="999.999.999-99"
+                                            value={this.state.cpf}
+										    onChange={e => this.setState({cpf: e.target.value})} 
+                                            />
                                     </Form.Input>
 
                                     <Form.Input
                                         required
                                         fluid
                                         width={6}
-                                        label='RG'>
+                                        label='RG'
+                                        value={this.state.rg}
+										onChange={e => this.setState({rg: e.target.value})}
+                                        >
                                     </Form.Input>
 
                                 </Form.Group>
@@ -67,6 +91,8 @@ class FormCliente extends React.Component {
                                             mask="99/99/9999"
                                             maskChar={null}
                                             placeholder="Ex: 20/03/1985"
+                                            value={this.state.dataNascimento}
+										    onChange={e => this.setState({dataNascimento: e.target.value})}
                                         />
                                     </Form.Input>
 
@@ -76,7 +102,10 @@ class FormCliente extends React.Component {
                                         label='Fone Celular'
                                     >
                                         <InputMask
-                                            mask="(99) 9999.9999" />
+                                            mask="(99) 9999.9999"
+                                            value={this.state.foneCelular}
+										    onChange={e => this.setState({foneCelular: e.target.value})}
+                                        />
                                     </Form.Input>
 
                                     <Form.Input
@@ -84,18 +113,25 @@ class FormCliente extends React.Component {
                                         label='Fone Fixo'
                                     >
                                         <InputMask
-                                            mask="(99) 9999.9999" />
+                                            mask="(99) 9999.9999"
+                                            value={this.state.foneFixo}
+										    onChange={e => this.setState({foneFixo: e.target.value})}
+                                        />
                                     </Form.Input>
 
                                     <Form.Input
                                         fluid
                                         label='QTD Entregas Realizadas'
+                                        value={this.state.qtdEntregasRealizadas}
+										onChange={e => this.setState({qtdEntregasRealizadas: e.target.value})}
                                     >
                                     </Form.Input>
 
                                     <Form.Input
                                         fluid
                                         label='Valor Por Frete'
+                                        value={this.state.valorFrete}
+										onChange={e => this.setState({valorFrete: e.target.value})}
                                     >
                                     </Form.Input>
 
@@ -106,12 +142,17 @@ class FormCliente extends React.Component {
                                     <Form.Input
                                         fluid
                                         label='Rua'
+                                        value={this.state.enderecoRua}
+										onChange={e => this.setState({enderecoRua: e.target.value})}
                                     />
 
                                     <Form.Input
                                         width={4}
                                         fluid
-                                        label='Número'>
+                                        label='Número'
+                                        value={this.state.enderecoNumero}
+										onChange={e => this.setState({enderecoNumero: e.target.value})}
+                                    >
                                     </Form.Input>
 
                                 </Form.Group>
@@ -121,11 +162,15 @@ class FormCliente extends React.Component {
                                     <Form.Input
                                         fluid
                                         label='Bairro'
+                                        value={this.state.enderecoBairro}
+										onChange={e => this.setState({enderecoBairro: e.target.value})}
                                     />
 
                                     <Form.Input
                                         fluid
                                         label='Cidade'
+                                        value={this.state.enderecoCidade}
+										onChange={e => this.setState({enderecoCidade: e.target.value})}
                                     />
 
                                     <Form.Input
@@ -133,7 +178,10 @@ class FormCliente extends React.Component {
                                         fluid
                                         label='CEP'>
                                         <InputMask
-                                            mask="12345-123" />
+                                            mask="12345-123" 
+                                            value={this.state.enderecoCep}
+										    onChange={e => this.setState({enderecoCep: e.target.value})}
+                                        />
                                     </Form.Input>
 
                                 </Form.Group>
@@ -143,7 +191,10 @@ class FormCliente extends React.Component {
                                     <Form.Input
                                         fluid
                                         label='UF'>
-                                        <Select placeholder='Selecione' fluid options={countryOptions} />
+                                        <Select placeholder='Selecione' fluid options={countryOptions}
+                                            value={this.state.enderecoUf}
+                                            onChange={e => this.setState({enderecoUf: e.target.value})}
+                                        />
                                     </Form.Input>
 
                                 </Form.Group>
@@ -152,7 +203,10 @@ class FormCliente extends React.Component {
 
                                     <Form.Input
                                         fluid
-                                        label='Complemento'>
+                                        label='Complemento'
+                                        value={this.state.enderecoComplemento}
+										onChange={e => this.setState({enderecoComplemento: e.target.value})}
+                                        >
                                     </Form.Input>
 
                                 </Form.Group>
@@ -162,15 +216,13 @@ class FormCliente extends React.Component {
                                     <label>Ativo:</label>
                                     <Form.Radio
                                         label='Sim'
-                                        value='sim'
-                                        checked={value === 'sim'}
-                                        onChange={this.handleChange}
+                                        checked={this.state.ativo}
+										onChange={e => this.setState({ativo: true})}
                                     />
                                     <Form.Radio
                                         label='Não'
-                                        value='nao'
-                                        checked={value === 'nao'}
-                                        onChange={this.handleChange}
+                                        checked={!this.state.ativo}
+										onChange={e => this.setState({ativo: false})}
                                     />
 
                                 </Form.Group>
