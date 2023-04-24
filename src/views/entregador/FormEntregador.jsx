@@ -1,13 +1,14 @@
+import axios from "axios";
 import React from "react";
 import InputMask from 'react-input-mask';
-import { Button, Container, Divider, Form, Icon, Select } from 'semantic-ui-react';
+import { Button, Container, Divider, Form, Icon } from 'semantic-ui-react';
 
 const countryOptions = [
     { key: 'bh', value: 'bh', text: 'BH' },
     { key: 'pe', value: 'pe', text: 'PE' },
 ]
 
-class FormCliente extends React.Component {
+class FormEntregador extends React.Component {
 
     state = {
         nome: null,
@@ -28,8 +29,39 @@ class FormCliente extends React.Component {
         ativo: true
     }
 
+    salvar = () => {
+
+		let entregadorRequest = {
+
+			nome: this.state.nome,
+			cpf: this.state.cpf,
+            rg: this.state.rg,
+			dataNascimento: this.state.dataNascimento,
+			foneCelular: this.state.foneCelular,
+			foneFixo: this.state.foneFixo,
+            qtdEntregasRealizadas: this.state.qtdEntregasRealizadas,
+            valorFrete: this.state.valorFrete,
+            enderecoRua: this.state.enderecoRua,
+            enderecoNumero: this.state.enderecoNumero,
+            enderecoBairro: this.state.enderecoBairro,
+            enderecoCidade: this.state.enderecoCidade,
+            enderecoCep: this.state.enderecoCep,
+            enderecoUf: this.state.enderecoUf,
+            enderecoComplemento: this.state.enderecoComplemento,
+            ativo: this.state.ativo
+		}
+
+        console.log(entregadorRequest)
+		axios.post("http://localhost:8082/api/entregador", entregadorRequest)
+		.then((response) => {
+			console.log('Entregador cadastrado com sucesso.')
+		})
+		.catch((error) => {
+			console.log('Erro ao incluir o um Entregador.')
+		})
+	}
+
     render() {
-        const { value } = this.state
         return (
             <div>
 
@@ -178,7 +210,7 @@ class FormCliente extends React.Component {
                                         fluid
                                         label='CEP'>
                                         <InputMask
-                                            mask="12345-123" 
+                                            mask="99999-999" 
                                             value={this.state.enderecoCep}
 										    onChange={e => this.setState({enderecoCep: e.target.value})}
                                         />
@@ -188,14 +220,16 @@ class FormCliente extends React.Component {
 
                                 <Form.Group widths='equal'>
 
-                                    <Form.Input
-                                        fluid
-                                        label='UF'>
-                                        <Select placeholder='Selecione' fluid options={countryOptions}
-                                            value={this.state.enderecoUf}
-                                            onChange={e => this.setState({enderecoUf: e.target.value})}
-                                        />
-                                    </Form.Input>
+                                    <Form.Select
+                                    label='UF'
+                                    placeholder='Selecione' 
+                                    fluid 
+                                    options={countryOptions}
+                                    value={this.state.enderecoUf}
+                                    onChange={(e, {value}) => {
+                                        this.setState({enderecoUf: value})
+                                     }}
+                                    />
 
                                 </Form.Group>
 
@@ -272,4 +306,4 @@ class FormCliente extends React.Component {
     }
 }
 
-export default FormCliente;
+export default FormEntregador;
