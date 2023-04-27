@@ -51,7 +51,6 @@ class FormEntregador extends React.Component {
             ativo: this.state.ativo
 		}
 
-        console.log(entregadorRequest)
 		axios.post("http://localhost:8082/api/entregador", entregadorRequest)
 		.then((response) => {
 			console.log('Entregador cadastrado com sucesso.')
