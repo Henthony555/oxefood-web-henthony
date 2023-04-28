@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import InputMask from 'react-input-mask';
+import { Link } from "react-router-dom";
 import { Button, Container, Divider, Form, Icon } from 'semantic-ui-react';
 
 class FormProduto extends React.Component {
@@ -115,7 +116,7 @@ class FormProduto extends React.Component {
                                     <Form.Input
                                         fluid
                                         placeholder='40'
-                                        label='Tempo de Entrega Máxio em Minutos'
+                                        label='Tempo de Entrega Máximo em Minutos'
                                         width={6}
                                         value={this.state.tempoEntregaMaximo}
 										onChange={e => this.setState({tempoEntregaMaximo: e.target.value})}
@@ -127,18 +128,20 @@ class FormProduto extends React.Component {
                                 <Form.Group widths='equal' style={{ marginTop: '4%' }} className='form--empresa-salvar'>
 
                                     <Container textAlign='left'>
-                                        <Button
-                                            type="button"
-                                            inverted
-                                            circular
-                                            icon
-                                            labelPosition='left'
-                                            color='orange'
-                                            onClick={this.listar}
-                                        >
-                                            <Icon name='reply' />
-                                            Listar
-                                        </Button>
+                                        <Link to={'/list-produto'}>
+                                            <Button
+                                                type="button"
+                                                inverted
+                                                circular
+                                                icon
+                                                labelPosition='left'
+                                                color='orange'
+                                                onClick={this.listar}
+                                            >
+                                                <Icon name='reply' />
+                                                Voltar
+                                            </Button>
+                                        </Link>
                                     </Container>
 
                                     <Container textAlign='right'>

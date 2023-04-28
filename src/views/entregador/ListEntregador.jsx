@@ -3,11 +3,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Icon, Table } from 'semantic-ui-react';
 
-class ListCliente extends React.Component {
+class ListEntregador extends React.Component {
 
     state = {
 
-        listaClientes: []
+        listaEntregadores: []
 
     }
 
@@ -18,11 +18,11 @@ class ListCliente extends React.Component {
     }
     carregarLista = () => {
 
-        axios.get("http://localhost:8082/api/cliente")
+        axios.get("http://localhost:8082/api/entregador")
             .then((response) => {
 
                 this.setState({
-                    listaClientes: response.data
+                    listaEntregadores: response.data
                 })
             })
 
@@ -49,12 +49,12 @@ class ListCliente extends React.Component {
 
                     <Container textAlign='justified' >
 
-                        <h2> Cliente </h2>
+                        <h2> Entregador </h2>
 
                         <Divider />
 
                         <div style={{ marginTop: '4%' }}>
-                            <Link to={'/form-cliente'}>
+                            <Link to={'/form-entregador'}>
                                 <Button
                                     inverted
                                     circular
@@ -75,37 +75,48 @@ class ListCliente extends React.Component {
                                     <Table.Row>
                                         <Table.HeaderCell>Nome</Table.HeaderCell>
                                         <Table.HeaderCell>CPF</Table.HeaderCell>
+                                        <Table.HeaderCell>RG</Table.HeaderCell>
                                         <Table.HeaderCell>Data de Nascimento</Table.HeaderCell>
                                         <Table.HeaderCell>Fone Celular</Table.HeaderCell>
                                         <Table.HeaderCell>Fone Fixo</Table.HeaderCell>
-                                        <Table.HeaderCell textAlign='center' width={2}>Ações</Table.HeaderCell>
+                                        <Table.HeaderCell>...</Table.HeaderCell>
+                                        <Table.HeaderCell textAlign='center' width={3}>Ações</Table.HeaderCell>
                                     </Table.Row>
                                 </Table.Header>
 
                                 <Table.Body>
 
-                                    {this.state.listaClientes.map(cliente => (
+                                    {this.state.listaEntregadores.map(entregador => (
 
                                         <Table.Row>
-                                            <Table.Cell>{cliente.nome}</Table.Cell>
-                                            <Table.Cell>{cliente.cpf}</Table.Cell>
-                                            <Table.Cell>{this.formatarData(cliente.dataNascimento)}</Table.Cell>
-                                            <Table.Cell>{cliente.foneCelular}</Table.Cell>
-                                            <Table.Cell>{cliente.foneFixo}</Table.Cell>
+                                            <Table.Cell>{entregador.nome}</Table.Cell>
+                                            <Table.Cell>{entregador.cpf}</Table.Cell>
+                                            <Table.Cell>{entregador.rg}</Table.Cell>
+                                            <Table.Cell>{this.formatarData(entregador.dataNascimento)}</Table.Cell>
+                                            <Table.Cell>{entregador.foneCelular}</Table.Cell>
+                                            <Table.Cell>{entregador.foneFixo}</Table.Cell>
+                                            <Table.Cell>...</Table.Cell>
                                             <Table.Cell textAlign='center'>
+
+                                                <Button
+                                                    inverted
+                                                    circular
+                                                    icon='eye'
+                                                    color='orange'
+                                                    itle='Clique aqui para ver todos os dados deste entregador' /> &nbsp;
 
                                                 <Button
                                                     inverted
                                                     circular
                                                     icon='edit'
                                                     color='blue'
-                                                    itle='Clique aqui para editar os dados deste cliente' /> &nbsp;
+                                                    itle='Clique aqui para editar os dados deste entregador' /> &nbsp;
                                                 <Button
                                                     inverted
                                                     circular
                                                     icon='trash'
                                                     color='red'
-                                                    title='Clique aqui para remover este cliente' />
+                                                    title='Clique aqui para remover este entregador' />
 
                                             </Table.Cell>
                                         </Table.Row>
@@ -121,4 +132,4 @@ class ListCliente extends React.Component {
     }
 }
 
-export default ListCliente;
+export default ListEntregador;

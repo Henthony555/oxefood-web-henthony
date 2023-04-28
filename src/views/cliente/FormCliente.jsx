@@ -118,18 +118,20 @@ class FormCliente extends React.Component {
 								<Form.Group widths='equal' style={{ marginTop: '4%' }} className='form--empresa-salvar'>
 
 									<Container textAlign='left'>
-										<Button
-											type="button"
-											inverted
-											circular
-											icon
-											labelPosition='left'
-											color='orange'
-											onClick={this.listar}
-										>
-											<Icon name='reply' />
-											<Link to={'/list-cliente'}>Voltar</Link>
-										</Button>
+										<Link to={'/list-cliente'}>
+											<Button
+												type="button"
+												inverted
+												circular
+												icon
+												labelPosition='left'
+												color='orange'
+												onClick={this.listar}
+											>
+												<Icon name='reply' />
+												Voltar
+											</Button>
+										</Link>
 									</Container>
 
 									<Container textAlign='right'>

@@ -1,6 +1,7 @@
 import axios from "axios";
 import React from "react";
 import InputMask from 'react-input-mask';
+import { Link } from "react-router-dom";
 import { Button, Container, Divider, Form, Icon } from 'semantic-ui-react';
 
 const countryOptions = [
@@ -263,18 +264,20 @@ class FormEntregador extends React.Component {
                                 <Form.Group widths='equal' style={{ marginTop: '4%' }} className='form--empresa-salvar'>
 
                                     <Container textAlign='left'>
-                                        <Button
-                                            type="button"
-                                            inverted
-                                            circular
-                                            icon
-                                            labelPosition='left'
-                                            color='orange'
-                                            onClick={this.listar}
-                                        >
-                                            <Icon name='reply' />
-                                            Voltar
-                                        </Button>
+                                        <Link to={'/list-entregador'}>
+                                            <Button
+                                                type="button"
+                                                inverted
+                                                circular
+                                                icon
+                                                labelPosition='left'
+                                                color='orange'
+                                                onClick={this.listar}
+                                            >
+                                                <Icon name='reply' />
+                                                  Voltar
+                                            </Button>
+                                        </Link>
                                     </Container>
 
                                     <Container textAlign='right'>
