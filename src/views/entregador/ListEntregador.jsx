@@ -8,7 +8,8 @@ class ListEntregador extends React.Component {
     state = {
 
         listaEntregadores: [],
-        open: false
+        open: false,
+        selectedEntregador: null
 
     }
 
@@ -43,20 +44,12 @@ class ListEntregador extends React.Component {
         return dataFormatada
     };
 
-    setOpen = () => {
-
-        if(this.state.open){
-            this.setState({
-                open: false
-            })
-        }else{
-            this.setState({
-                open: true
-            })
-        }
-
-        
-    };
+    setOpen = (entregador) => {
+        this.setState({
+            open: !this.state.open,
+            selectedEntregador: entregador
+        });
+    }
 
 
 
@@ -118,8 +111,8 @@ class ListEntregador extends React.Component {
                                                 <Table.Cell>...</Table.Cell>
                                                 <Table.Cell textAlign='center'>
 
-                                                <Button
-                                                        onClick={() => this.setOpen()}
+                                                    <Button
+                                                        onClick={() => this.setOpen(entregador)}
                                                         inverted
                                                         circular
                                                         icon='eye'
@@ -153,15 +146,23 @@ class ListEntregador extends React.Component {
 
                 <Modal
                     open={this.state.open}
-                    onClose={() => this.setOpen()}
-                    onOpen={() => this.setOpen()}
+                    onClose={() => this.setOpen(null)} 
+                    onOpen={() => this.setOpen(null)} 
                 >
-                    <Modal.Header>Entregador</Modal.Header>
+                    <Modal.Header>{this.state.selectedEntregador && this.state.selectedEntregador.nome}</Modal.Header>
                     <Modal.Content scrolling>
-
+                        {this.state.selectedEntregador && (
+                            <div>
+                                <p>CPF: {this.state.selectedEntregador.cpf}</p>
+                                <p>RG: {this.state.selectedEntregador.rg}</p>
+                                <p>Data de Nascimento: {this.formatarData(this.state.selectedEntregador.dataNascimento)}</p>
+                                <p>Fone Celular: {this.state.selectedEntregador.foneCelular}</p>
+                                <p>Fone Fixo: {this.state.selectedEntregador.foneFixo}</p>
+                            </div>
+                        )}
                     </Modal.Content>
                     <Modal.Actions>
-                        <Button onClick={() => this.setOpen()} color='orange'>
+                        <Button onClick={() => this.setOpen(null)} color='orange'>
                             Voltar <Icon name='chevron right' />
                         </Button>
                     </Modal.Actions>
