@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import InputMask from 'react-input-mask';
-import { Button, Container, Divider, Form, Icon } from 'semantic-ui-react';
+import { Button, Container, Divider, Form, Icon, Message } from 'semantic-ui-react';
 
 class FormCliente extends React.Component {
 
@@ -12,8 +12,27 @@ class FormCliente extends React.Component {
 		cpf: null,
 		dataNascimento: null,
 		foneCelular: null,
-		foneFixo: null
+		foneFixo: null,
+		successMessage: null,
+		errorMessage: null
 	}
+
+	limparCampos = () => {
+		this.setState({
+			nome: '',
+			cpf: '',
+			dataNascimento: '',
+			foneCelular: '',
+			foneFixo: ''
+		});
+	};
+
+	limparMensagem = () => {
+		this.setState({
+			successMessage: null,
+			errorMessage: null
+		});
+	};
 
 	salvar = () => {
 
@@ -27,12 +46,21 @@ class FormCliente extends React.Component {
 		}
 
 		axios.post("http://localhost:8082/api/cliente", clienteRequest)
-		.then((response) => {
-			console.log('Cliente cadastrado com sucesso.')
-		})
-		.catch((error) => {
-			console.log('Erro ao incluir o um cliente.')
-		})
+			.then((response) => {
+				this.setState({ successMessage: 'Cliente cadastrado com sucesso.', errorMessage: null });
+				this.limparCampos();
+
+				setTimeout(() => {
+					this.limparMensagem();
+				}, 3000);
+			})
+			.catch((error) => {
+				this.setState({ errorMessage: 'Erro ao incluir o Cliente.', successMessage: null });
+
+				setTimeout(() => {
+					this.limparMensagem();
+				}, 3000);
+			})
 	}
 
 
@@ -48,6 +76,9 @@ class FormCliente extends React.Component {
 
 						<Divider />
 
+						{this.state.successMessage && <Message positive>{this.state.successMessage}</Message>}
+						{this.state.errorMessage && <Message negative>{this.state.errorMessage}</Message>}
+
 						<div style={{ marginTop: '4%' }}>
 
 							<Form>
@@ -60,16 +91,16 @@ class FormCliente extends React.Component {
 										label='Nome'
 										maxLength="100"
 										value={this.state.nome}
-										onChange={e => this.setState({nome: e.target.value})}
+										onChange={e => this.setState({ nome: e.target.value })}
 									/>
 
 									<Form.Input
 										fluid
 										label='CPF'>
 										<InputMask
-											mask="999.999.999-99" 
+											mask="999.999.999-99"
 											value={this.state.cpf}
-											onChange={e => this.setState({cpf: e.target.value})}
+											onChange={e => this.setState({ cpf: e.target.value })}
 										/>
 									</Form.Input>
 
@@ -82,9 +113,9 @@ class FormCliente extends React.Component {
 										label='Fone Celular'
 										width={6}>
 										<InputMask
-											mask="(99) 9999.9999" 
+											mask="(99) 9999.9999"
 											value={this.state.foneCelular}
-											onChange={e => this.setState({foneCelular: e.target.value})}
+											onChange={e => this.setState({ foneCelular: e.target.value })}
 										/>
 									</Form.Input>
 
@@ -93,9 +124,9 @@ class FormCliente extends React.Component {
 										label='Fone Fixo'
 										width={6}>
 										<InputMask
-											mask="(99) 9999.9999" 
+											mask="(99) 9999.9999"
 											value={this.state.foneFixo}
-											onChange={e => this.setState({foneFixo: e.target.value})}
+											onChange={e => this.setState({ foneFixo: e.target.value })}
 										/>
 									</Form.Input>
 
@@ -109,7 +140,7 @@ class FormCliente extends React.Component {
 											maskChar={null}
 											placeholder="Ex: 20/03/1985"
 											value={this.state.dataNascimento}
-										 	onChange={e => this.setState({dataNascimento: e.target.value})}
+											onChange={e => this.setState({ dataNascimento: e.target.value })}
 										/>
 									</Form.Input>
 

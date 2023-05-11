@@ -2,40 +2,69 @@ import React from "react";
 import axios from "axios";
 import InputMask from 'react-input-mask';
 import { Link } from "react-router-dom";
-import { Button, Container, Divider, Form, Icon } from 'semantic-ui-react';
+import { Button, Container, Divider, Form, Icon, Message  } from 'semantic-ui-react';
 
 class FormProduto extends React.Component {
 
     state = {
 
-		codigo: null,
+        codigo: null,
         titulo: null,
         descricao: null,
         valorUnitario: null,
         tempoEntregaMinimo: null,
-        tempoEntregaMaximo: null
-	}
+        tempoEntregaMaximo: null,
+        successMessage: null,
+        errorMessage: null
+    }
+
+    limparCampos = () => {
+        this.setState({
+            codigo: '',
+            titulo: '',
+            descricao: '',
+            valorUnitario: '',
+            tempoEntregaMinimo: '',
+            tempoEntregaMaximo: ''
+        });
+    };
+
+    limparMensagem = () => {
+        this.setState({
+            successMessage: null,
+            errorMessage: null
+        });
+    };
 
     salvar = () => {
 
-		let produtoRequest = {
+        let produtoRequest = {
 
-			codigo: this.state.codigo,
+            codigo: this.state.codigo,
             titulo: this.state.titulo,
             descricao: this.state.descricao,
             valorUnitario: this.state.valorUnitario,
             tempoEntregaMinimo: this.state.tempoEntregaMinimo,
             tempoEntregaMaximo: this.state.tempoEntregaMaximo
-		}
+        }
 
-		axios.post("http://localhost:8082/api/produto", produtoRequest)
-		.then((response) => {
-			console.log('Produto cadastrado com sucesso.')
+        axios.post("http://localhost:8082/api/produto", produtoRequest)
+        .then((response) => {
+			this.setState({ successMessage: 'Produto cadastrado com sucesso.', errorMessage: null });
+            this.limparCampos();
+
+            setTimeout(() => {
+                this.limparMensagem();
+            }, 3000);
 		})
 		.catch((error) => {
-			console.log('Erro ao incluir o um Produto.')
+			this.setState({ errorMessage: 'Erro ao incluir o Produto.', successMessage: null });
+
+            setTimeout(() => {
+                this.limparMensagem();
+            }, 3000);
 		})
-	}
+    }
 
     render() {
         return (
@@ -49,6 +78,9 @@ class FormProduto extends React.Component {
 
                         <Divider />
 
+                        {this.state.successMessage && <Message positive>{this.state.successMessage}</Message>}
+                        {this.state.errorMessage && <Message negative>{this.state.errorMessage}</Message>}
+
                         <div style={{ marginTop: '4%' }}>
 
                             <Form>
@@ -61,7 +93,7 @@ class FormProduto extends React.Component {
                                         label='Título'
                                         maxLength="100"
                                         value={this.state.titulo}
-										onChange={e => this.setState({titulo: e.target.value})}
+                                        onChange={e => this.setState({ titulo: e.target.value })}
                                     />
 
                                     <Form.Input
@@ -71,8 +103,8 @@ class FormProduto extends React.Component {
                                         width={6}
                                         label='Código do Produto'
                                         value={this.state.codigo}
-										onChange={e => this.setState({codigo: e.target.value})}
-                                        >
+                                        onChange={e => this.setState({ codigo: e.target.value })}
+                                    >
                                     </Form.Input>
 
                                 </Form.Group>
@@ -85,7 +117,7 @@ class FormProduto extends React.Component {
                                         width={16}
                                         placeholder='Informe a descrição do produto'
                                         value={this.state.descricao}
-										onChange={e => this.setState({descricao: e.target.value})}
+                                        onChange={e => this.setState({ descricao: e.target.value })}
                                     />
 
                                 </Form.Group>
@@ -98,9 +130,9 @@ class FormProduto extends React.Component {
                                         label='Valor Unitário'
                                         width={6}
                                         value={this.state.valorUnitario}
-										onChange={e => this.setState({valorUnitario: e.target.value})}
+                                        onChange={e => this.setState({ valorUnitario: e.target.value })}
                                     >
-                                            
+
                                     </Form.Input>
 
                                     <Form.Input
@@ -109,8 +141,8 @@ class FormProduto extends React.Component {
                                         label='Tempo de Entrega Minimo em Minutos'
                                         width={6}
                                         value={this.state.tempoEntregaMinimo}
-										onChange={e => this.setState({tempoEntregaMinimo: e.target.value})}
-                                        >
+                                        onChange={e => this.setState({ tempoEntregaMinimo: e.target.value })}
+                                    >
                                     </Form.Input>
 
                                     <Form.Input
@@ -119,7 +151,7 @@ class FormProduto extends React.Component {
                                         label='Tempo de Entrega Máximo em Minutos'
                                         width={6}
                                         value={this.state.tempoEntregaMaximo}
-										onChange={e => this.setState({tempoEntregaMaximo: e.target.value})}
+                                        onChange={e => this.setState({ tempoEntregaMaximo: e.target.value })}
                                     >
                                     </Form.Input>
 

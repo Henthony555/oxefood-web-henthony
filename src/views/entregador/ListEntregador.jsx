@@ -9,7 +9,7 @@ class ListEntregador extends React.Component {
 
         listaEntregadores: [],
         open: false,
-        dadosEntregador: null
+        entregadorSelecionado: null
 
     }
 
@@ -57,16 +57,24 @@ class ListEntregador extends React.Component {
         return ativoFormatado
     };
 
-    setOpen = (entregador) => {
-        this.setState({
-            open: !this.state.open,
-            dadosEntregador: entregador
-        });
-    }
+    setOpen = (id) => {
+        if (id) {
+          axios.get(`http://localhost:8082/api/entregador/${id}`)
+            .then((response) => {
+              this.setState({
+                entregadorSelecionado: response.data,
+                open: true
+              })
+            })
+        } else {
+          this.setState({ open: false });
+        }
+      };
 
 
 
     render() {
+        const  dadosModal  = this.state.entregadorSelecionado;
         return (
             <>
                 <div>
@@ -114,7 +122,7 @@ class ListEntregador extends React.Component {
 
                                         {this.state.listaEntregadores.map(entregador => (
 
-                                            <Table.Row>
+                                            <Table.Row key={entregador.id}>
                                                 <Table.Cell>{entregador.nome}</Table.Cell>
                                                 <Table.Cell>{entregador.cpf}</Table.Cell>
                                                 <Table.Cell>{entregador.rg}</Table.Cell>
@@ -124,8 +132,8 @@ class ListEntregador extends React.Component {
                                                 <Table.Cell>...</Table.Cell>
                                                 <Table.Cell textAlign='center'>
 
-                                                    <Button
-                                                        onClick={() => this.setOpen(entregador)}
+                                                <Button
+                                                        onClick={() => this.setOpen(entregador.id)}
                                                         inverted
                                                         circular
                                                         icon='eye'
@@ -156,42 +164,43 @@ class ListEntregador extends React.Component {
                     </div>
                 </div>
 
-
+                {dadosModal && (
                 <Modal
                     open={this.state.open}
-                    onClose={() => this.setOpen(null)} 
-                    onOpen={() => this.setOpen(null)} 
+                    onClose={() => this.setOpen()}
+                    onOpen={() => this.setOpen()}
                 >
                     <Modal.Header>
-                      <Icon name='motorcycle' /> {this.state.dadosEntregador && this.state.dadosEntregador.nome}
+                    <Icon name='motorcycle' /> {dadosModal.nome}
                     </Modal.Header>
                     <Modal.Content scrolling>
-                        {this.state.dadosEntregador && (
+                    
                             <>
-                                <h5>CPF: {this.state.dadosEntregador.cpf}</h5>
-                                <h5>RG: {this.state.dadosEntregador.rg}</h5>
-                                <h5>Data de Nascimento: {this.formatarData(this.state.dadosEntregador.dataNascimento)}</h5>
-                                <h5>Fone Celular: {this.state.dadosEntregador.foneCelular}</h5>
-                                <h5>Fone Fixo: {this.state.dadosEntregador.foneFixo}</h5>
-                                <h5>qtdEntregasRealizadas: {this.state.dadosEntregador.qtdEntregasRealizadas}</h5>
-                                <h5>valorFrete: {this.state.dadosEntregador.valorFrete}</h5>
-                                <h5>enderecoRua: {this.state.dadosEntregador.enderecoRua}</h5>
-                                <h5>enderecoNumero: {this.state.dadosEntregador.enderecoNumero}</h5>
-                                <h5>enderecoBairro: {this.state.dadosEntregador.enderecoBairro}</h5>
-                                <h5>enderecoCidade: {this.state.dadosEntregador.enderecoCidade}</h5>
-                                <h5>enderecoCep: {this.state.dadosEntregador.enderecoCep}</h5>
-                                <h5>enderecoUf: {this.state.dadosEntregador.enderecoUf}</h5>
-                                <h5>enderecoComplemento: {this.state.dadosEntregador.enderecoComplemento}</h5>
-                                <h5>ativo: {this.formatarAtivo(this.state.dadosEntregador.ativo)}</h5>
+                                <h5>CPF: {dadosModal.cpf}</h5>
+                                <h5>RG: {dadosModal.rg}</h5>
+                                <h5>Data de Nascimento: {this.formatarData(dadosModal.dataNascimento)}</h5>
+                                <h5>Fone Celular: {dadosModal.foneCelular}</h5>
+                                <h5>Fone Fixo: {dadosModal.foneFixo}</h5>
+                                <h5>qtdEntregasRealizadas: {dadosModal.qtdEntregasRealizadas}</h5>
+                                <h5>valorFrete: {dadosModal.valorFrete}</h5>
+                                <h5>enderecoRua: {dadosModal.enderecoRua}</h5>
+                                <h5>enderecoNumero: {dadosModal.enderecoNumero}</h5>
+                                <h5>enderecoBairro: {dadosModal.enderecoBairro}</h5>
+                                <h5>enderecoCidade: {dadosModal.enderecoCidade}</h5>
+                                <h5>enderecoCep: {dadosModal.enderecoCep}</h5>
+                                <h5>enderecoUf: {dadosModal.enderecoUf}</h5>
+                                <h5>enderecoComplemento: {dadosModal.enderecoComplemento}</h5>
+                                <h5>ativo: {this.formatarAtivo(dadosModal.ativo)}</h5>
                             </>
-                        )}
+                       
                     </Modal.Content>
                     <Modal.Actions>
-                        <Button onClick={() => this.setOpen(null)} color='orange'>
+                        <Button onClick={() => this.setOpen()} color='orange'>
                             Voltar <Icon name='chevron right' />
                         </Button>
                     </Modal.Actions>
                 </Modal>
+                 )}
             </>
         )
 
