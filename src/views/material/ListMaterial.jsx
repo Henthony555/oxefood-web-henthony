@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 import { Button, Container, Divider, Icon, Table } from 'semantic-ui-react';
 import { ENDERECO_API } from "../../util/Constantes"
 
-class ListProduto extends React.Component {
+class ListMaterial extends React.Component {
 
     state = {
 
-        listaProdutos: []
+        listaMaterial: []
 
     }
 
@@ -19,11 +19,11 @@ class ListProduto extends React.Component {
     }
     carregarLista = () => {
 
-        axios.get(ENDERECO_API + "api/produto")
+        axios.get(ENDERECO_API + "api/material")
             .then((response) => {
 
                 this.setState({
-                    listaProdutos: response.data
+                    listaMaterial: response.data
                 })
             })
 
@@ -50,12 +50,12 @@ class ListProduto extends React.Component {
 
                     <Container textAlign='justified' >
 
-                        <h2> Produto </h2>
+                        <h2> Material </h2>
 
                         <Divider />
 
                         <div style={{ marginTop: '4%' }}>
-                            <Link to={'/form-produto'}>
+                            <Link to={'/form-material'}>
                                 <Button
                                     inverted
                                     circular
@@ -74,28 +74,27 @@ class ListProduto extends React.Component {
 
                                 <Table.Header>
                                     <Table.Row>
-                                        <Table.HeaderCell>Código</Table.HeaderCell>
-                                        <Table.HeaderCell>Título</Table.HeaderCell>
-                                        <Table.HeaderCell>Descrição</Table.HeaderCell>
-                                        <Table.HeaderCell>Valor Unitário</Table.HeaderCell>
-                                        <Table.HeaderCell>Tempo de Entrega Minino</Table.HeaderCell>
-                                        <Table.HeaderCell>Tempo de Entrega Máximo</Table.HeaderCell>
+                                        <Table.HeaderCell>Titulo</Table.HeaderCell>
+                                        <Table.HeaderCell>Valor</Table.HeaderCell>
+                                        <Table.HeaderCell>Resposavel</Table.HeaderCell>
+                                        <Table.HeaderCell>Localização</Table.HeaderCell>
+                                        <Table.HeaderCell>Peso</Table.HeaderCell>
+                                        <Table.HeaderCell>Data de Aquisição</Table.HeaderCell>
                                         <Table.HeaderCell textAlign='center' width={2}>Ações</Table.HeaderCell>
                                     </Table.Row>
                                 </Table.Header>
 
                                 <Table.Body>
 
-                                    {this.state.listaProdutos.map(protudo => (
+                                    {this.state.listaMaterial.map(material => (
 
-                                        <Table.Row key={protudo.id}>
-                                            <Table.Cell>{protudo.codigo}</Table.Cell>
-                                            <Table.Cell>{protudo.titulo}</Table.Cell>
-                                            <Table.Cell>{protudo.descricao}</Table.Cell>
-                                            <Table.Cell>{protudo.valorUnitario}</Table.Cell>
-                                            <Table.Cell>{protudo.tempoEntregaMinimo}</Table.Cell>
-                                            <Table.Cell>{protudo.tempoEntregaMaximo}</Table.Cell>
-
+                                        <Table.Row key={material.id}>
+                                            <Table.Cell>{material.titulo}</Table.Cell>
+                                            <Table.Cell>{material.valor}</Table.Cell>
+                                            <Table.Cell>{material.resposavel}</Table.Cell>
+                                            <Table.Cell>{material.localizacao}</Table.Cell>
+                                            <Table.Cell>{material.peso}</Table.Cell>
+                                            <Table.Cell>{this.formatarData(material.dataAquisicao)}</Table.Cell>
                                             <Table.Cell textAlign='center'>
 
                                                 <Button
@@ -103,13 +102,13 @@ class ListProduto extends React.Component {
                                                     circular
                                                     icon='edit'
                                                     color='blue'
-                                                    itle='Clique aqui para editar os dados deste produto' /> &nbsp;
+                                                    itle='Clique aqui para editar os dados deste material' /> &nbsp;
                                                 <Button
                                                     inverted
                                                     circular
                                                     icon='trash'
                                                     color='red'
-                                                    title='Clique aqui para remover este produto' />
+                                                    title='Clique aqui para remover este material' />
 
                                             </Table.Cell>
                                         </Table.Row>
@@ -125,4 +124,4 @@ class ListProduto extends React.Component {
     }
 }
 
-export default ListProduto;
+export default ListMaterial;

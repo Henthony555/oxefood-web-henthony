@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import InputMask from 'react-input-mask';
 import { Button, Container, Divider, Form, Icon, Message } from 'semantic-ui-react';
+import { ENDERECO_API } from "../../util/Constantes"
 
 class FormCliente extends React.Component {
 
@@ -45,7 +46,7 @@ class FormCliente extends React.Component {
 			foneFixo: this.state.foneFixo
 		}
 
-		axios.post("http://localhost:8082/api/cliente", clienteRequest)
+		axios.post(ENDERECO_API + "api/cliente", clienteRequest)
 			.then((response) => {
 				this.setState({ successMessage: 'Cliente cadastrado com sucesso.', errorMessage: null });
 				this.limparCampos();

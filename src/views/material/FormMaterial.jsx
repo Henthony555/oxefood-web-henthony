@@ -1,32 +1,33 @@
 import React from "react";
 import axios from "axios";
-import InputMask from 'react-input-mask';
 import { Link } from "react-router-dom";
-import { Button, Container, Divider, Form, Icon, Message  } from 'semantic-ui-react';
+import InputMask from 'react-input-mask';
+import { Button, Container, Divider, Form, Icon, Message } from 'semantic-ui-react';
 import { ENDERECO_API } from "../../util/Constantes"
 
-class FormProduto extends React.Component {
+class FormMaterial extends React.Component {
 
     state = {
 
-        codigo: null,
         titulo: null,
-        descricao: null,
-        valorUnitario: null,
-        tempoEntregaMinimo: null,
-        tempoEntregaMaximo: null,
+        valor: null,
+        resposavel: null,
+        localizacao: null,
+        peso: null,
+        dataAquisicao: null,
+
         successMessage: null,
         errorMessage: null
     }
 
     limparCampos = () => {
         this.setState({
-            codigo: '',
             titulo: '',
-            descricao: '',
-            valorUnitario: '',
-            tempoEntregaMinimo: '',
-            tempoEntregaMaximo: ''
+            valor: '',
+            resposavel: '',
+            localizacao: '',
+            peso: '',
+            dataAquisicao: ''
         });
     };
 
@@ -39,33 +40,34 @@ class FormProduto extends React.Component {
 
     salvar = () => {
 
-        let produtoRequest = {
+        let materialRequest = {
 
-            codigo: this.state.codigo,
             titulo: this.state.titulo,
-            descricao: this.state.descricao,
-            valorUnitario: this.state.valorUnitario,
-            tempoEntregaMinimo: this.state.tempoEntregaMinimo,
-            tempoEntregaMaximo: this.state.tempoEntregaMaximo
+            valor: this.state.valor,
+            resposavel: this.state.resposavel,
+            localizacao: this.state.localizacao,
+            peso: this.state.peso,
+            dataAquisicao: this.state.dataAquisicao
         }
 
-        axios.post(ENDERECO_API + "api/produto", produtoRequest)
-        .then((response) => {
-			this.setState({ successMessage: 'Produto cadastrado com sucesso.', errorMessage: null });
-            this.limparCampos();
+        axios.post(ENDERECO_API + "api/material", materialRequest)
+            .then((response) => {
+                this.setState({ successMessage: 'Material cadastrado com sucesso.', errorMessage: null });
+                this.limparCampos();
 
-            setTimeout(() => {
-                this.limparMensagem();
-            }, 3000);
-		})
-		.catch((error) => {
-			this.setState({ errorMessage: 'Erro ao incluir o Produto.', successMessage: null });
+                setTimeout(() => {
+                    this.limparMensagem();
+                }, 3000);
+            })
+            .catch((error) => {
+                this.setState({ errorMessage: 'Erro ao incluir o Material.', successMessage: null });
 
-            setTimeout(() => {
-                this.limparMensagem();
-            }, 3000);
-		})
+                setTimeout(() => {
+                    this.limparMensagem();
+                }, 3000);
+            })
     }
+
 
     render() {
         return (
@@ -75,7 +77,7 @@ class FormProduto extends React.Component {
 
                     <Container textAlign='justified' >
 
-                        <h2> <span style={{ color: 'darkgray' }}> Produto &nbsp;<Icon name='angle double right' size="small" /> </span> Cadastro </h2>
+                        <h2> <span style={{ color: 'darkgray' }}> Material &nbsp;<Icon name='angle double right' size="small" /> </span> Cadastro </h2>
 
                         <Divider />
 
@@ -91,8 +93,7 @@ class FormProduto extends React.Component {
                                     <Form.Input
                                         required
                                         fluid
-                                        label='Título'
-                                        maxLength="100"
+                                        label='Titulo'
                                         value={this.state.titulo}
                                         onChange={e => this.setState({ titulo: e.target.value })}
                                     />
@@ -100,60 +101,50 @@ class FormProduto extends React.Component {
                                     <Form.Input
                                         required
                                         fluid
-                                        placeholder='Informe o código do produto'
-                                        width={6}
-                                        label='Código do Produto'
-                                        value={this.state.codigo}
-                                        onChange={e => this.setState({ codigo: e.target.value })}
-                                    >
-                                    </Form.Input>
-
-                                </Form.Group>
-
-                                <Form.Group>
-
-                                    <Form.TextArea
-                                        fluid
-                                        label='Descrição'
-                                        width={16}
-                                        placeholder='Informe a descrição do produto'
-                                        value={this.state.descricao}
-                                        onChange={e => this.setState({ descricao: e.target.value })}
+                                        label='Valor'
+                                        value={this.state.valor}
+                                        onChange={e => this.setState({ valor: e.target.value })}
                                     />
-
-                                </Form.Group>
-
-                                <Form.Group>
 
                                     <Form.Input
                                         required
                                         fluid
-                                        label='Valor Unitário'
-                                        width={6}
-                                        value={this.state.valorUnitario}
-                                        onChange={e => this.setState({ valorUnitario: e.target.value })}
-                                    >
+                                        label='Resposavel'
+                                        value={this.state.resposavel}
+                                        onChange={e => this.setState({ resposavel: e.target.value })}
+                                    />
 
-                                    </Form.Input>
+                                </Form.Group>
+
+                                <Form.Group widths='equal'>
+
+                                    <Form.Input
+                                        required
+                                        fluid
+                                        label='Localização'
+                                        value={this.state.localizacao}
+                                        onChange={e => this.setState({ localizacao: e.target.value })}
+                                    />
+
+                                    <Form.Input
+                                        placeholder="24kg"
+                                        fluid
+                                        label='Peso'
+                                        value={this.state.peso}
+                                        onChange={e => this.setState({ peso: e.target.value })}
+                                    />
 
                                     <Form.Input
                                         fluid
-                                        placeholder='30'
-                                        label='Tempo de Entrega Minimo em Minutos'
-                                        width={6}
-                                        value={this.state.tempoEntregaMinimo}
-                                        onChange={e => this.setState({ tempoEntregaMinimo: e.target.value })}
+                                        label='Data de aquisição'
                                     >
-                                    </Form.Input>
-
-                                    <Form.Input
-                                        fluid
-                                        placeholder='40'
-                                        label='Tempo de Entrega Máximo em Minutos'
-                                        width={6}
-                                        value={this.state.tempoEntregaMaximo}
-                                        onChange={e => this.setState({ tempoEntregaMaximo: e.target.value })}
-                                    >
+                                        <InputMask
+                                            mask="99/99/9999"
+                                            maskChar={null}
+                                            placeholder="Ex: 20/05/2023"
+                                            value={this.state.dataAquisicao}
+                                            onChange={e => this.setState({ dataAquisicao: e.target.value })}
+                                        />
                                     </Form.Input>
 
                                 </Form.Group>
@@ -161,7 +152,7 @@ class FormProduto extends React.Component {
                                 <Form.Group widths='equal' style={{ marginTop: '4%' }} className='form--empresa-salvar'>
 
                                     <Container textAlign='left'>
-                                        <Link to={'/list-produto'}>
+                                        <Link to={'/list-material'}>
                                             <Button
                                                 type="button"
                                                 inverted
@@ -199,10 +190,10 @@ class FormProduto extends React.Component {
                             </Form>
                         </div>
                     </Container>
-                </div>
-            </div>
+                </div >
+            </div >
         )
     }
 }
 
-export default FormProduto;
+export default FormMaterial;
