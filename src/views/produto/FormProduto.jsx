@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Button, Container, Divider, Form, Icon, Message  } from 'semantic-ui-react';
 import { ENDERECO_API } from "../../util/Constantes"
 
-class FormProduto extends React.Component {
+export default function FormProduto() {
 
     state = {
 
@@ -19,25 +19,7 @@ class FormProduto extends React.Component {
         errorMessage: null
     }
 
-    limparCampos = () => {
-        this.setState({
-            codigo: '',
-            titulo: '',
-            descricao: '',
-            valorUnitario: '',
-            tempoEntregaMinimo: '',
-            tempoEntregaMaximo: ''
-        });
-    };
-
-    limparMensagem = () => {
-        this.setState({
-            successMessage: null,
-            errorMessage: null
-        });
-    };
-
-    salvar = () => {
+    function salvar() {
 
         let produtoRequest = {
 
@@ -67,7 +49,6 @@ class FormProduto extends React.Component {
 		})
     }
 
-    render() {
         return (
             <div>
 
@@ -78,9 +59,6 @@ class FormProduto extends React.Component {
                         <h2> <span style={{ color: 'darkgray' }}> Produto &nbsp;<Icon name='angle double right' size="small" /> </span> Cadastro </h2>
 
                         <Divider />
-
-                        {this.state.successMessage && <Message positive>{this.state.successMessage}</Message>}
-                        {this.state.errorMessage && <Message negative>{this.state.errorMessage}</Message>}
 
                         <div style={{ marginTop: '4%' }}>
 
@@ -161,10 +139,11 @@ class FormProduto extends React.Component {
                                 <Form.Group widths='equal' style={{ marginTop: '4%' }} className='form--empresa-salvar'>
 
                                     <Container textAlign='left'>
-                                        <Link to={'/list-produto'}>
                                             <Button
                                                 type="button"
                                                 inverted
+                                                as={Link}
+                                                to='/list-produto'
                                                 circular
                                                 icon
                                                 labelPosition='left'
@@ -174,7 +153,6 @@ class FormProduto extends React.Component {
                                                 <Icon name='reply' />
                                                 Voltar
                                             </Button>
-                                        </Link>
                                     </Container>
 
                                     <Container textAlign='right'>
@@ -186,7 +164,7 @@ class FormProduto extends React.Component {
                                             labelPosition='left'
                                             color='blue'
                                             floated='right'
-                                            onClick={this.salvar}
+                                            onClick={() => salvar()}
                                         >
                                             <Icon name='save' />
                                             Salvar
@@ -202,7 +180,4 @@ class FormProduto extends React.Component {
                 </div>
             </div>
         )
-    }
-}
-
-export default FormProduto;
+};

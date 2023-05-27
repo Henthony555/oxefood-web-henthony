@@ -100,6 +100,8 @@ class ListProduto extends React.Component {
 
                                                 <Button
                                                     inverted
+                                                    as={Link}
+                                                    to='/form-produto' state={{id: protudo.id}}
                                                     circular
                                                     icon='edit'
                                                     color='blue'

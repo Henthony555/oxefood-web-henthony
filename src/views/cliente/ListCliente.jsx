@@ -97,6 +97,8 @@ class ListCliente extends React.Component {
 
                                                 <Button
                                                     inverted
+                                                    as={Link}
+                                                    to='/form-cliente' state={{id: cliente.id}}
                                                     circular
                                                     icon='edit'
                                                     color='blue'

@@ -1,197 +1,156 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import InputMask from 'react-input-mask';
 import { Button, Container, Divider, Form, Icon, Message } from 'semantic-ui-react';
 import { ENDERECO_API } from "../../util/Constantes"
 
-class FormCliente extends React.Component {
+export default function FormCliente() {
 
-	state = {
+	const [idCliente, setIdCliente] = useState();
+	const [nome, setNome] = useState();
+	const [cpf, setCpf] = useState();
+	const [dataNascimento, setDataNascimento] = useState();
+	const [foneCelular, setFoneCelular] = useState();
+	const [foneFixo, setFoneFixo] = useState();
 
-		nome: null,
-		cpf: null,
-		dataNascimento: null,
-		foneCelular: null,
-		foneFixo: null,
-		successMessage: null,
-		errorMessage: null
-	}
-
-	limparCampos = () => {
-		this.setState({
-			nome: '',
-			cpf: '',
-			dataNascimento: '',
-			foneCelular: '',
-			foneFixo: ''
-		});
-	};
-
-	limparMensagem = () => {
-		this.setState({
-			successMessage: null,
-			errorMessage: null
-		});
-	};
-
-	salvar = () => {
+	function salvar() {
 
 		let clienteRequest = {
-
-			nome: this.state.nome,
-			cpf: this.state.cpf,
-			dataNascimento: this.state.dataNascimento,
-			foneCelular: this.state.foneCelular,
-			foneFixo: this.state.foneFixo
+			nome: nome,
+			cpf: cpf,
+			dataNascimento: dataNascimento,
+			foneCelular: foneCelular,
+			foneFixo: foneFixo
 		}
 
 		axios.post(ENDERECO_API + "api/cliente", clienteRequest)
-			.then((response) => {
-				this.setState({ successMessage: 'Cliente cadastrado com sucesso.', errorMessage: null });
-				this.limparCampos();
+			.then((response) => { console.log('Cliente cadastrado com sucesso.') })
+			.catch((error) => { console.log('Erro ao incluir o cliente.') })
 
-				setTimeout(() => {
-					this.limparMensagem();
-				}, 3000);
-			})
-			.catch((error) => {
-				this.setState({ errorMessage: 'Erro ao incluir o Cliente.', successMessage: null });
-
-				setTimeout(() => {
-					this.limparMensagem();
-				}, 3000);
-			})
 	}
 
+	return (
+		<div>
 
-	render() {
-		return (
-			<div>
+			<div style={{ marginTop: '3%' }}>
 
-				<div style={{ marginTop: '3%' }}>
+				<Container textAlign='justified' >
 
-					<Container textAlign='justified' >
+					<h2> <span style={{ color: 'darkgray' }}> Cliente &nbsp;<Icon name='angle double right' size="small" /> </span> Cadastro </h2>
 
-						<h2> <span style={{ color: 'darkgray' }}> Cliente &nbsp;<Icon name='angle double right' size="small" /> </span> Cadastro </h2>
+					<Divider />
 
-						<Divider />
+					<div style={{ marginTop: '4%' }}>
 
-						{this.state.successMessage && <Message positive>{this.state.successMessage}</Message>}
-						{this.state.errorMessage && <Message negative>{this.state.errorMessage}</Message>}
+						<Form>
 
-						<div style={{ marginTop: '4%' }}>
+							<Form.Group widths='equal'>
 
-							<Form>
+								<Form.Input
+									required
+									fluid
+									label='Nome'
+									maxLength="100"
+									value={nome}
+									onChange={e => setNome(e.target.value)}
+								/>
 
-								<Form.Group widths='equal'>
-
-									<Form.Input
-										required
-										fluid
-										label='Nome'
-										maxLength="100"
-										value={this.state.nome}
-										onChange={e => this.setState({ nome: e.target.value })}
+								<Form.Input
+									fluid
+									label='CPF'>
+									<InputMask
+										mask="999.999.999-99"
+										value={cpf}
+										onChange={e => setCpf(e.target.value)}
 									/>
+								</Form.Input>
 
-									<Form.Input
-										fluid
-										label='CPF'>
-										<InputMask
-											mask="999.999.999-99"
-											value={this.state.cpf}
-											onChange={e => this.setState({ cpf: e.target.value })}
-										/>
-									</Form.Input>
+							</Form.Group>
 
-								</Form.Group>
+							<Form.Group>
 
-								<Form.Group>
+								<Form.Input
+									fluid
+									label='Fone Celular'
+									width={6}>
+									<InputMask
+										mask="(99) 9999.9999"
+										value={foneCelular}
+										onChange={e => setFoneCelular(e.target.value)}
+									/>
+								</Form.Input>
 
-									<Form.Input
-										fluid
-										label='Fone Celular'
-										width={6}>
-										<InputMask
-											mask="(99) 9999.9999"
-											value={this.state.foneCelular}
-											onChange={e => this.setState({ foneCelular: e.target.value })}
-										/>
-									</Form.Input>
+								<Form.Input
+									fluid
+									label='Fone Fixo'
+									width={6}>
+									<InputMask
+										mask="(99) 9999.9999"
+										value={foneFixo}
+										onChange={e => setFoneFixo(e.target.value)}
+									/>
+								</Form.Input>
 
-									<Form.Input
-										fluid
-										label='Fone Fixo'
-										width={6}>
-										<InputMask
-											mask="(99) 9999.9999"
-											value={this.state.foneFixo}
-											onChange={e => this.setState({ foneFixo: e.target.value })}
-										/>
-									</Form.Input>
+								<Form.Input
+									fluid
+									label='Data Nascimento'
+									width={6}
+								>
+									<InputMask
+										mask="99/99/9999"
+										maskChar={null}
+										placeholder="Ex: 20/03/1985"
+										value={dataNascimento}
+										onChange={e => setDataNascimento(e.target.value)}
+									/>
+								</Form.Input>
 
-									<Form.Input
-										fluid
-										label='Data Nascimento'
-										width={6}
+							</Form.Group>
+
+							<Form.Group widths='equal' style={{ marginTop: '4%' }} className='form--empresa-salvar'>
+
+								<Container textAlign='left'>
+
+									<Button
+										type="button"
+										inverted
+										circular
+										as={Link}
+										to='/list-cliente'
+										icon
+										labelPosition='left'
+										color='orange'
 									>
-										<InputMask
-											mask="99/99/9999"
-											maskChar={null}
-											placeholder="Ex: 20/03/1985"
-											value={this.state.dataNascimento}
-											onChange={e => this.setState({ dataNascimento: e.target.value })}
-										/>
-									</Form.Input>
+										<Icon name='reply' />
+										Voltar
+									</Button>
 
-								</Form.Group>
+								</Container>
 
-								<Form.Group widths='equal' style={{ marginTop: '4%' }} className='form--empresa-salvar'>
+								<Container textAlign='right'>
 
-									<Container textAlign='left'>
-										<Link to={'/list-cliente'}>
-											<Button
-												type="button"
-												inverted
-												circular
-												icon
-												labelPosition='left'
-												color='orange'
-												onClick={this.listar}
-											>
-												<Icon name='reply' />
-												Voltar
-											</Button>
-										</Link>
-									</Container>
+									<Button
+										inverted
+										circular
+										icon
+										labelPosition='left'
+										color='blue'
+										floated='right'
+										onClick={() => salvar()}
+									>
+										<Icon name='save' />
+										Salvar
+									</Button>
 
-									<Container textAlign='right'>
+								</Container>
 
-										<Button
-											inverted
-											circular
-											icon
-											labelPosition='left'
-											color='blue'
-											floated='right'
-											onClick={this.salvar}
-										>
-											<Icon name='save' />
-											Salvar
-										</Button>
+							</Form.Group>
 
-									</Container>
-
-								</Form.Group>
-
-							</Form>
-						</div>
-					</Container>
-				</div>
+						</Form>
+					</div>
+				</Container>
 			</div>
-		)
-	}
-}
-
-export default FormCliente;
+		</div>
+	)
+};
