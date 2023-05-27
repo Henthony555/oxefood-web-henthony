@@ -1,183 +1,166 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import InputMask from 'react-input-mask';
 import { Link } from "react-router-dom";
-import { Button, Container, Divider, Form, Icon, Message  } from 'semantic-ui-react';
+import { Button, Container, Divider, Form, Icon, Message } from 'semantic-ui-react';
 import { ENDERECO_API } from "../../util/Constantes"
 
 export default function FormProduto() {
 
-    state = {
+    const [idProduto, setIdProduto] = useState();
+    const [codigo, setCodigo] = useState();
+    const [titulo, setTitulo] = useState();
+    const [descricao, setDescricao] = useState();
+    const [valorUnitario, setValorUnitario] = useState();
+    const [tempoEntregaMinimo, setTempoEntregaMinimo] = useState();
+    const [tempoEntregaMaximo, setTempoEntregaMaximo] = useState();
 
-        codigo: null,
-        titulo: null,
-        descricao: null,
-        valorUnitario: null,
-        tempoEntregaMinimo: null,
-        tempoEntregaMaximo: null,
-        successMessage: null,
-        errorMessage: null
-    }
 
     function salvar() {
 
         let produtoRequest = {
 
-            codigo: this.state.codigo,
-            titulo: this.state.titulo,
-            descricao: this.state.descricao,
-            valorUnitario: this.state.valorUnitario,
-            tempoEntregaMinimo: this.state.tempoEntregaMinimo,
-            tempoEntregaMaximo: this.state.tempoEntregaMaximo
+            codigo: codigo,
+            titulo: titulo,
+            descricao: descricao,
+            valorUnitario: valorUnitario,
+            tempoEntregaMinimo: tempoEntregaMinimo,
+            tempoEntregaMaximo: tempoEntregaMaximo
         }
 
         axios.post(ENDERECO_API + "api/produto", produtoRequest)
-        .then((response) => {
-			this.setState({ successMessage: 'Produto cadastrado com sucesso.', errorMessage: null });
-            this.limparCampos();
-
-            setTimeout(() => {
-                this.limparMensagem();
-            }, 3000);
-		})
-		.catch((error) => {
-			this.setState({ errorMessage: 'Erro ao incluir o Produto.', successMessage: null });
-
-            setTimeout(() => {
-                this.limparMensagem();
-            }, 3000);
-		})
+            .then((response) => { console.log('Produto cadastrado com sucesso.') })
+            .catch((error) => { console.log('Erro ao incluir o produto.') })
     }
 
-        return (
-            <div>
+    return (
+        <div>
 
-                <div style={{ marginTop: '3%' }}>
+            <div style={{ marginTop: '3%' }}>
 
-                    <Container textAlign='justified' >
+                <Container textAlign='justified' >
 
-                        <h2> <span style={{ color: 'darkgray' }}> Produto &nbsp;<Icon name='angle double right' size="small" /> </span> Cadastro </h2>
+                    <h2> <span style={{ color: 'darkgray' }}> Produto &nbsp;<Icon name='angle double right' size="small" /> </span> Cadastro </h2>
 
-                        <Divider />
+                    <Divider />
 
-                        <div style={{ marginTop: '4%' }}>
+                    <div style={{ marginTop: '4%' }}>
 
-                            <Form>
+                        <Form>
 
-                                <Form.Group widths='equal'>
+                            <Form.Group widths='equal'>
 
-                                    <Form.Input
-                                        required
-                                        fluid
-                                        label='Título'
-                                        maxLength="100"
-                                        value={this.state.titulo}
-                                        onChange={e => this.setState({ titulo: e.target.value })}
-                                    />
+                                <Form.Input
+                                    required
+                                    fluid
+                                    label='Título'
+                                    maxLength="100"
+                                    value={titulo}
+                                    onChange={e => setTitulo(e.target.value)}
+                                />
 
-                                    <Form.Input
-                                        required
-                                        fluid
-                                        placeholder='Informe o código do produto'
-                                        width={6}
-                                        label='Código do Produto'
-                                        value={this.state.codigo}
-                                        onChange={e => this.setState({ codigo: e.target.value })}
+                                <Form.Input
+                                    required
+                                    fluid
+                                    placeholder='Informe o código do produto'
+                                    width={6}
+                                    label='Código do Produto'
+                                    value={codigo}
+                                    onChange={e => setCodigo(e.target.value)}
+                                >
+                                </Form.Input>
+
+                            </Form.Group>
+
+                            <Form.Group>
+
+                                <Form.TextArea
+                                    fluid
+                                    label='Descrição'
+                                    width={16}
+                                    placeholder='Informe a descrição do produto'
+                                    value={descricao}
+                                    onChange={e => setDescricao(e.target.value)}
+                                />
+
+                            </Form.Group>
+
+                            <Form.Group>
+
+                                <Form.Input
+                                    required
+                                    fluid
+                                    label='Valor Unitário'
+                                    width={6}
+                                    value={valorUnitario}
+                                    onChange={e => setValorUnitario(e.target.value)}
+                                >
+
+                                </Form.Input>
+
+                                <Form.Input
+                                    fluid
+                                    placeholder='30'
+                                    label='Tempo de Entrega Minimo em Minutos'
+                                    width={6}
+                                    value={tempoEntregaMinimo}
+                                    onChange={e => setTempoEntregaMinimo(e.target.value)}
+                                >
+                                </Form.Input>
+
+                                <Form.Input
+                                    fluid
+                                    placeholder='40'
+                                    label='Tempo de Entrega Máximo em Minutos'
+                                    width={6}
+                                    value={tempoEntregaMaximo}
+                                    onChange={e => setTempoEntregaMaximo(e.target.value)}
+                                >
+                                </Form.Input>
+
+                            </Form.Group>
+
+                            <Form.Group widths='equal' style={{ marginTop: '4%' }} className='form--empresa-salvar'>
+
+                                <Container textAlign='left'>
+                                    <Button
+                                        type="button"
+                                        inverted
+                                        as={Link}
+                                        to='/list-produto'
+                                        circular
+                                        icon
+                                        labelPosition='left'
+                                        color='orange'
                                     >
-                                    </Form.Input>
+                                        <Icon name='reply' />
+                                        Voltar
+                                    </Button>
+                                </Container>
 
-                                </Form.Group>
+                                <Container textAlign='right'>
 
-                                <Form.Group>
-
-                                    <Form.TextArea
-                                        fluid
-                                        label='Descrição'
-                                        width={16}
-                                        placeholder='Informe a descrição do produto'
-                                        value={this.state.descricao}
-                                        onChange={e => this.setState({ descricao: e.target.value })}
-                                    />
-
-                                </Form.Group>
-
-                                <Form.Group>
-
-                                    <Form.Input
-                                        required
-                                        fluid
-                                        label='Valor Unitário'
-                                        width={6}
-                                        value={this.state.valorUnitario}
-                                        onChange={e => this.setState({ valorUnitario: e.target.value })}
+                                    <Button
+                                        inverted
+                                        circular
+                                        icon
+                                        labelPosition='left'
+                                        color='blue'
+                                        floated='right'
+                                        onClick={() => salvar()}
                                     >
+                                        <Icon name='save' />
+                                        Salvar
+                                    </Button>
 
-                                    </Form.Input>
+                                </Container>
 
-                                    <Form.Input
-                                        fluid
-                                        placeholder='30'
-                                        label='Tempo de Entrega Minimo em Minutos'
-                                        width={6}
-                                        value={this.state.tempoEntregaMinimo}
-                                        onChange={e => this.setState({ tempoEntregaMinimo: e.target.value })}
-                                    >
-                                    </Form.Input>
+                            </Form.Group>
 
-                                    <Form.Input
-                                        fluid
-                                        placeholder='40'
-                                        label='Tempo de Entrega Máximo em Minutos'
-                                        width={6}
-                                        value={this.state.tempoEntregaMaximo}
-                                        onChange={e => this.setState({ tempoEntregaMaximo: e.target.value })}
-                                    >
-                                    </Form.Input>
-
-                                </Form.Group>
-
-                                <Form.Group widths='equal' style={{ marginTop: '4%' }} className='form--empresa-salvar'>
-
-                                    <Container textAlign='left'>
-                                            <Button
-                                                type="button"
-                                                inverted
-                                                as={Link}
-                                                to='/list-produto'
-                                                circular
-                                                icon
-                                                labelPosition='left'
-                                                color='orange'
-                                                onClick={this.listar}
-                                            >
-                                                <Icon name='reply' />
-                                                Voltar
-                                            </Button>
-                                    </Container>
-
-                                    <Container textAlign='right'>
-
-                                        <Button
-                                            inverted
-                                            circular
-                                            icon
-                                            labelPosition='left'
-                                            color='blue'
-                                            floated='right'
-                                            onClick={() => salvar()}
-                                        >
-                                            <Icon name='save' />
-                                            Salvar
-                                        </Button>
-
-                                    </Container>
-
-                                </Form.Group>
-
-                            </Form>
-                        </div>
-                    </Container>
-                </div>
+                        </Form>
+                    </div>
+                </Container>
             </div>
-        )
+        </div>
+    )
 };
