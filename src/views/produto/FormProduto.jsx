@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import InputMask from 'react-input-mask';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button, Container, Divider, Form, Icon, Message } from 'semantic-ui-react';
 import { ENDERECO_API } from "../../util/Constantes"
 
 export default function FormProduto() {
+
+    const { state } = useLocation();
 
     const [idProduto, setIdProduto] = useState();
     const [codigo, setCodigo] = useState();
@@ -28,10 +30,32 @@ export default function FormProduto() {
             tempoEntregaMaximo: tempoEntregaMaximo
         }
 
-        axios.post(ENDERECO_API + "api/produto", produtoRequest)
-            .then((response) => { console.log('Produto cadastrado com sucesso.') })
-            .catch((error) => { console.log('Erro ao incluir o produto.') })
+        if (idProduto != null) { //Atualizar:
+            axios.put(ENDERECO_API + "api/produto/" + idProduto, produtoRequest)
+                .then((response) => { console.log('Produto alterado com sucesso.') })
+                .catch((error) => { console.log('Erro ao alter um produto.') })
+        } else { //Cadastro:
+            axios.post(ENDERECO_API + "api/produto", produtoRequest)
+                .then((response) => { console.log('Produto cadastrado com sucesso.') })
+                .catch((error) => { console.log('Erro ao incluir o produto.') })
+        }
     }
+
+    useEffect(() => {
+		if (state != null && state.id != null) {
+			axios.get(ENDERECO_API + "api/produto/" + state.id)
+				.then((response) => {
+					setIdProduto(response.data.id)
+					setCodigo(response.data.codigo)
+					setTitulo(response.data.titulo)
+					setDescricao(response.data.descricao)
+					setValorUnitario(response.data.valorUnitario)
+					setTempoEntregaMinimo(response.data.tempoEntregaMinimo)
+					setTempoEntregaMaximo(response.data.tempoEntregaMaximo)
+					
+				})
+		}
+	}, [state])
 
     return (
         <div>
@@ -40,7 +64,12 @@ export default function FormProduto() {
 
                 <Container textAlign='justified' >
 
-                    <h2> <span style={{ color: 'darkgray' }}> Produto &nbsp;<Icon name='angle double right' size="small" /> </span> Cadastro </h2>
+                    {idProduto === undefined &&
+                        <h2> <span style={{ color: 'darkgray' }}> Produto &nbsp;<Icon name='angle double right' size="small" /> </span> Cadastro</h2>
+                    }
+                    {idProduto != undefined &&
+                        <h2> <span style={{ color: 'darkgray' }}> Produto &nbsp;<Icon name='angle double right' size="small" /> </span> Alteração</h2>
+                    }
 
                     <Divider />
 
