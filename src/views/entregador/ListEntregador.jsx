@@ -1,13 +1,15 @@
 import axios from 'axios';
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button, Container, Divider, Icon, Modal, Table } from 'semantic-ui-react';
+import { Button, Container, Divider, Icon, Modal, Table, Header } from 'semantic-ui-react';
 import { ENDERECO_API } from "../../util/Constantes"
 
 class ListEntregador extends React.Component {
 
     state = {
 
+        openModal: false,
+        idRemover: null,
         listaEntregadores: [],
         open: false,
         entregadorSelecionado: null
@@ -29,6 +31,28 @@ class ListEntregador extends React.Component {
                 })
             })
 
+    };
+
+    remover = async () => {
+
+        await axios.delete(ENDERECO_API + 'api/entregador/' + this.state.idRemover)
+            .then((response) => {
+
+                this.setState({ openModal: false })
+                console.log('Entregador removido com sucesso.')
+
+                axios.get(ENDERECO_API + "api/entregador")
+                    .then((response) => {
+
+                        this.setState({
+                            listaEntregadores: response.data
+                        })
+                    })
+            })
+            .catch((error) => {
+                this.setState({ openModal: false })
+                console.log('Erro ao remover um entregador.')
+            })
     };
 
     formatarData = (dataParam) => {
@@ -72,7 +96,20 @@ class ListEntregador extends React.Component {
         }
     };
 
+    confirmaRemover = (id) => {
 
+        this.setState({
+            openModal: true,
+            idRemover: id
+        })
+    };
+
+    setOpenModal = (val) => {
+
+        this.setState({
+            openModal: val
+        })
+    };
 
     render() {
         const dadosModal = this.state.entregadorSelecionado;
@@ -150,6 +187,7 @@ class ListEntregador extends React.Component {
                                                         color='blue'
                                                         itle='Clique aqui para editar os dados deste entregador' /> &nbsp;
                                                     <Button
+                                                        onClick={e => this.confirmaRemover(entregador.id)}
                                                         inverted
                                                         circular
                                                         icon='trash'
@@ -204,6 +242,27 @@ class ListEntregador extends React.Component {
                         </Modal.Actions>
                     </Modal>
                 )}
+
+                <Modal
+                    basic
+                    onClose={() => this.setOpenModal(false)}
+                    onOpen={() => this.setOpenModal(true)}
+                    open={this.state.openModal}
+                >
+                    <Header icon>
+                        <Icon name='trash' />
+                        <div style={{ marginTop: '5%' }}> Tem certeza que deseja remover esse registro? </div>
+                    </Header>
+                    <Modal.Actions>
+                        <Button basic color='red' inverted onClick={() => this.setOpenModal(false)}>
+                            <Icon name='remove' /> Não
+                        </Button>
+                        <Button color='green' inverted onClick={() => this.remover()}>
+                            <Icon name='checkmark' /> Sim
+                        </Button>
+                    </Modal.Actions>
+                </Modal>
+
             </>
         )
 
