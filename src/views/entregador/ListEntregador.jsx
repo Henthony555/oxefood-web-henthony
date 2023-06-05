@@ -57,7 +57,7 @@ class ListEntregador extends React.Component {
 
     formatarData = (dataParam) => {
 
-        if (dataParam == null || dataParam == '') {
+        if (dataParam === null || dataParam === '') {
             return ''
         }
 
@@ -73,7 +73,7 @@ class ListEntregador extends React.Component {
 
         let ativoFormatado
 
-        if (ativoParam == true) {
+        if (ativoParam === true) {
             ativoFormatado = "Sim";
         } else {
             ativoFormatado = "Não";
