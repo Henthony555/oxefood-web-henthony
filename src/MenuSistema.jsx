@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Menu } from "semantic-ui-react";
+import { Menu, Dropdown } from "semantic-ui-react";
 
 class MenuSistema extends React.Component {
 
@@ -30,13 +30,17 @@ class MenuSistema extends React.Component {
                         to='/list-cliente'
                     />
 
-                    <Menu.Item
-                        name='produto'
-                        active={this.state.activeItem === 'produto'}
-                        onClick={this.handleItemClick}
-                        as={Link}
-                        to='/list-produto'
-                    />
+                    <Dropdown item text='produto'>
+                        <Dropdown.Menu>
+                            <Dropdown.Item as={Link} to='/list-produto'>
+                                Produto
+                            </Dropdown.Item>
+                            <Dropdown.Item as={Link} to='/list-categoriaproduto'>
+                                Categoria Produto
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+
 
                     <Menu.Item
                         name='entregador'

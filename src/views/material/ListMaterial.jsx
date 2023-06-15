@@ -31,7 +31,7 @@ class ListMaterial extends React.Component {
 
     formatarData = (dataParam) => {
 
-        if (dataParam == null || dataParam == '') {
+        if (dataParam === null || dataParam === '') {
             return ''
         }
 
