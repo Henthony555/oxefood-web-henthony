@@ -16,12 +16,15 @@ export default function FormProduto() {
     const [valorUnitario, setValorUnitario] = useState();
     const [tempoEntregaMinimo, setTempoEntregaMinimo] = useState();
     const [tempoEntregaMaximo, setTempoEntregaMaximo] = useState();
+    const [listaCategoria, setListaCategoria] = useState([]);
+    const [idCategoria, setIdCategoria] = useState();
 
 
     function salvar() {
 
         let produtoRequest = {
 
+            idCategoria: idCategoria,
             codigo: codigo,
             titulo: titulo,
             descricao: descricao,
@@ -42,20 +45,27 @@ export default function FormProduto() {
     }
 
     useEffect(() => {
-		if (state != null && state.id != null) {
-			axios.get(ENDERECO_API + "api/produto/" + state.id)
-				.then((response) => {
-					setIdProduto(response.data.id)
-					setCodigo(response.data.codigo)
-					setTitulo(response.data.titulo)
-					setDescricao(response.data.descricao)
-					setValorUnitario(response.data.valorUnitario)
-					setTempoEntregaMinimo(response.data.tempoEntregaMinimo)
-					setTempoEntregaMaximo(response.data.tempoEntregaMaximo)
-					
-				})
-		}
-	}, [state])
+        if (state != null && state.id != null) {
+            axios.get(ENDERECO_API + "api/produto/" + state.id)
+                .then((response) => {
+                    setIdProduto(response.data.id)
+                    setCodigo(response.data.codigo)
+                    setTitulo(response.data.titulo)
+                    setDescricao(response.data.descricao)
+                    setValorUnitario(response.data.valorUnitario)
+                    setTempoEntregaMinimo(response.data.tempoEntregaMinimo)
+                    setTempoEntregaMaximo(response.data.tempoEntregaMaximo)
+                    setIdCategoria(response.data.categoria.id)
+                })
+        }
+
+        axios.get(ENDERECO_API + "api/categoriaproduto")
+       .then((response) => {
+           const dropDownCategorias = response.data.map(c => ({ text: c.descricao, value: c.id }));
+           setListaCategoria(dropDownCategorias);
+       })
+
+    }, [state])
 
     return (
         <div>
@@ -99,6 +109,22 @@ export default function FormProduto() {
                                 >
                                 </Form.Input>
 
+                            </Form.Group>
+
+                            <Form.Group widths='equal'>
+
+                                <Form.Select
+                                    required
+                                    fluid
+                                    tabIndex='3'
+                                    placeholder='Selecione'
+                                    label='Categoria'
+                                    options={listaCategoria}
+                                    value={idCategoria}
+                                    onChange={(e,{value}) => {
+                                        setIdCategoria(value)
+                                    }}                                
+                                />
                             </Form.Group>
 
                             <Form.Group>
